@@ -127,6 +127,10 @@
     transition: transform .5s ease, box-shadow .5s ease;
   }
   .carte:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(31, 27, 23, .35); }
+  .carte .affiche {
+    margin-bottom: 1.8rem; background: #fff; border: 1px solid var(--ligne);
+  }
+  .carte .affiche img { width: 100%; height: 440px; object-fit: contain; }
   .carte .label { margin-bottom: 0.8rem; }
   .carte .lieu { font-style: italic; color: var(--gris); margin-bottom: 1.4rem; }
   .carte ul { list-style: none; border-top: 1px solid var(--ligne); margin: 1rem 0 1.6rem; }
@@ -315,6 +319,7 @@
 
     <div class="grille">
       <article class="carte reveal">
+        <div class="affiche"><img src="assets/affiche-biot.jpg" data-i18n-alt="alt_affiche_biot" alt="" loading="lazy"></div>
         <p class="label">Biot</p>
         <h3>La Douce Vie Social Club</h3>
         <p class="lieu" data-i18n="biot_horaire"></p>
@@ -328,6 +333,7 @@
       </article>
 
       <article class="carte reveal">
+        <div class="affiche"><img src="assets/affiche-fourmiliere.jpg" data-i18n-alt="alt_affiche_fourmi" alt="" loading="lazy"></div>
         <p class="label" data-i18n="fourmi_label"></p>
         <h3>La Fourmilière</h3>
         <p class="lieu" data-i18n="fourmi_horaire"></p>
@@ -341,6 +347,7 @@
       </article>
 
       <article class="carte reveal">
+        <div class="affiche"><img src="assets/affiche-juan.jpg" data-i18n-alt="alt_affiche_juan" alt="" loading="lazy"></div>
         <p class="label">Juan-les-Pins</p>
         <h3 data-i18n="juan_titre"></h3>
         <p class="lieu" data-i18n="juan_horaire"></p>
@@ -542,6 +549,9 @@
       contact_label: "Contact", contact_titre: "Écrire, réserver, rencontrer",
       contact_lead: "Réservations par Instagram ou WhatsApp, en français, espagnol ou anglais.",
       soon: "Bientôt disponible",
+      alt_affiche_biot: "Affiche de l'atelier aquarelle à La Douce Vie, Biot",
+      alt_affiche_fourmi: "Affiche de l'atelier création de carte de Noël à La Fourmilière, Antibes",
+      alt_affiche_juan: "Affiche des mercredis d'aquarelle à Juan-les-Pins",
       livre_label: "Feuilleter les œuvres", prev_label: "Œuvre précédente", next_label: "Œuvre suivante",
       dot_label: "Aller à l'œuvre"
     },
@@ -583,6 +593,9 @@
       contact_label: "Contact", contact_titre: "Write, book, meet",
       contact_lead: "Bookings via Instagram or WhatsApp, in French, Spanish or English.",
       soon: "Coming soon",
+      alt_affiche_biot: "Watercolour workshop poster at La Douce Vie, Biot",
+      alt_affiche_fourmi: "Christmas card workshop poster at La Fourmilière, Antibes",
+      alt_affiche_juan: "Wednesday watercolour workshop poster in Juan-les-Pins",
       livre_label: "Browse the artworks", prev_label: "Previous artwork", next_label: "Next artwork",
       dot_label: "Go to artwork"
     },
@@ -624,6 +637,9 @@
       contact_label: "Contacto", contact_titre: "Escribir, reservar, conocer",
       contact_lead: "Reservas por Instagram o WhatsApp, en francés, español o inglés.",
       soon: "Próximamente",
+      alt_affiche_biot: "Cartel del taller de acuarela en La Douce Vie, Biot",
+      alt_affiche_fourmi: "Cartel del taller de tarjetas de Navidad en La Fourmilière, Antibes",
+      alt_affiche_juan: "Cartel de los miércoles de acuarela en Juan-les-Pins",
       livre_label: "Hojear las obras", prev_label: "Obra anterior", next_label: "Obra siguiente",
       dot_label: "Ir a la obra"
     }
