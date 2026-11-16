@@ -135,6 +135,25 @@
     margin-bottom: 1.8rem; background: #fff; border: 1px solid var(--ligne);
   }
   .carte .affiche img { width: 100%; height: 440px; object-fit: contain; }
+  .zoom { display: block; cursor: zoom-in; }
+
+  /* Visionneuse plein écran */
+  .visionneuse {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center; padding: 2rem;
+    background: rgba(31, 27, 23, .92);
+    opacity: 0; pointer-events: none; transition: opacity .4s ease;
+  }
+  .visionneuse.ouverte { opacity: 1; pointer-events: auto; }
+  .visionneuse img {
+    max-width: 100%; max-height: 92vh; object-fit: contain;
+    background: #fff; box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .6);
+  }
+  .visionneuse button {
+    position: absolute; top: 1.2rem; right: 1.6rem;
+    background: none; border: none; color: var(--papier);
+    font-family: var(--serif); font-size: 2.6rem; line-height: 1; cursor: zoom-out;
+  }
   .carte .label { margin-bottom: 0.8rem; }
   .carte .lieu { font-style: italic; color: var(--gris); margin-bottom: 1.4rem; }
   .carte ul { list-style: none; border-top: 1px solid var(--ligne); margin: 1rem 0 1.6rem; }
@@ -328,7 +347,7 @@
 
     <div class="grille">
       <article class="carte reveal">
-        <div class="affiche"><img src="assets/affiche-biot.jpg" data-i18n-alt="alt_affiche_biot" alt="" loading="lazy"></div>
+        <div class="affiche"><a class="zoom" href="assets/affiche-biot.jpg" target="_blank" rel="noopener"><img src="assets/affiche-biot.jpg" data-i18n-alt="alt_affiche_biot" alt="" loading="lazy"></a></div>
         <p class="label">Biot</p>
         <h3>La Douce Vie Social Club</h3>
         <p class="lieu" data-i18n="biot_horaire"></p>
@@ -342,7 +361,7 @@
       </article>
 
       <article class="carte reveal">
-        <div class="affiche"><img src="assets/affiche-fourmiliere.jpg" data-i18n-alt="alt_affiche_fourmi" alt="" loading="lazy"></div>
+        <div class="affiche"><a class="zoom" href="assets/affiche-fourmiliere.jpg" target="_blank" rel="noopener"><img src="assets/affiche-fourmiliere.jpg" data-i18n-alt="alt_affiche_fourmi" alt="" loading="lazy"></a></div>
         <p class="label" data-i18n="fourmi_label"></p>
         <h3>La Fourmilière</h3>
         <p class="lieu" data-i18n="fourmi_horaire"></p>
@@ -356,7 +375,7 @@
       </article>
 
       <article class="carte reveal">
-        <div class="affiche"><img src="assets/affiche-juan.jpg" data-i18n-alt="alt_affiche_juan" alt="" loading="lazy"></div>
+        <div class="affiche"><a class="zoom" href="assets/affiche-juan.jpg" target="_blank" rel="noopener"><img src="assets/affiche-juan.jpg" data-i18n-alt="alt_affiche_juan" alt="" loading="lazy"></a></div>
         <p class="label">Juan-les-Pins</p>
         <h3 data-i18n="juan_titre"></h3>
         <p class="lieu" data-i18n="juan_horaire"></p>
@@ -978,6 +997,42 @@
 
     // Léger délai pour que la page s'affiche d'abord
     setTimeout(() => requestAnimationFrame(boucle), 500);
+  })();
+
+  /* ----------------------------------------------------------------
+     VISIONNEUSE : clic sur une affiche pour la voir en entier
+     ---------------------------------------------------------------- */
+  (function () {
+    const vis = document.createElement("div");
+    vis.className = "visionneuse";
+    vis.setAttribute("role", "dialog");
+    vis.setAttribute("aria-modal", "true");
+    vis.innerHTML = '<button type="button" aria-label="Fermer">×</button><img alt="">';
+    document.body.appendChild(vis);
+    const imgGrande = vis.querySelector("img");
+    const btnFermer = vis.querySelector("button");
+
+    function fermer() {
+      vis.classList.remove("ouverte");
+    }
+
+    document.querySelectorAll(".zoom").forEach(a => {
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        const img = a.querySelector("img");
+        imgGrande.src = a.getAttribute("href");
+        imgGrande.alt = img ? img.alt : "";
+        vis.classList.add("ouverte");
+        btnFermer.focus();
+      });
+    });
+
+    vis.addEventListener("click", e => {
+      if (e.target !== imgGrande) fermer();
+    });
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") fermer();
+    });
   })();
 
   // Apparition douce
