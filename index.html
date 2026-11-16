@@ -608,7 +608,6 @@
     hero.classList.add("peindre");
     setTimeout(() => { hero.classList.remove("peindre"); hero.classList.add("peint-fait"); }, 2500);
   }
-  setTimeout(peindreTitre, 9000); // sécurité si l'animation des gouttes ne se termine pas
 
   const T = {
     fr: {
@@ -1038,7 +1037,6 @@
       }
 
       if (actives > 0 || lances < TOTAL) requestAnimationFrame(boucle);
-      else peindreTitre();
     }
 
     dimensionner();
@@ -1055,8 +1053,9 @@
       return;
     }
 
-    // Léger délai pour que la page s'affiche d'abord
-    setTimeout(() => requestAnimationFrame(boucle), 500);
+    // D'abord le pinceau termine le titre, ensuite les gouttes tombent
+    setTimeout(peindreTitre, 500);
+    setTimeout(() => requestAnimationFrame(boucle), 500 + 2300);
   })();
 
   /* ----------------------------------------------------------------
