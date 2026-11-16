@@ -29,3 +29,12 @@ Site statique (une seule page HTML) pour :
 - Prix des cartes : remplacer `Prix à définir` (`data-prix="..."`) dans la section « Cartes de Noël ».
 - Dates et ateliers : section « Ateliers ». Les dates passées doivent être retirées.
 - Ajouter une œuvre : copier une `<figure>` dans la section « Œuvres » et placer l'image dans `assets/`.
+
+## Langues
+
+Le site existe en français (par défaut), anglais et espagnol, dans un seul fichier.
+La langue vient de `?lang=fr|en|es` dans l'URL, sinon de la langue du navigateur. Les textes sont dans l'objet `T` du script.
+
+## Bon cadeau
+
+Un seul bon cadeau à 10 €, envoi postal inclus. Dans Stripe, activer la collecte de l'adresse de livraison sur ce Payment Link.
