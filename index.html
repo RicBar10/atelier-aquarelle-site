@@ -95,7 +95,41 @@
     font-size: clamp(3.4rem, 9vw, 7.5rem);
     font-weight: 300; letter-spacing: 0.02em; margin: 1.2rem 0 1rem;
   }
-  .hero h1 em { font-weight: 300; color: var(--violet); }
+  .hero h1 em { font-weight: 300; color: var(--violet); white-space: nowrap; }
+
+  /* Fin du mot peinte par un pinceau flottant */
+  .peint-zone { position: relative; display: inline-block; }
+  .peint { display: inline-block; clip-path: inset(-30% 105% -30% -20%); }
+  .hero.peindre .peint { animation: reveler 1.54s linear .22s forwards; }
+  .hero.peint-fait .peint { clip-path: none; }
+  .pinceau {
+    position: absolute; left: 0; bottom: .26em; width: .2em; height: 1em; margin-left: -.1em;
+    opacity: 0; pointer-events: none;
+  }
+  .pinceau svg {
+    display: block; width: 100%; height: 100%; overflow: visible;
+    transform-origin: 50% 100%; transform: rotate(24deg);
+  }
+  .hero.peindre .pinceau { animation: trajet 2.2s linear forwards; }
+  .hero.peindre .pinceau svg { animation: trace .34s ease-in-out infinite alternate; }
+  @keyframes reveler {
+    from { clip-path: inset(-30% 105% -30% -20%); }
+    to   { clip-path: inset(-30% -30% -30% -20%); }
+  }
+  @keyframes trajet {
+    0%   { left: -6%; opacity: 0; transform: translateY(-.25em); }
+    10%  { left: 0; opacity: 1; transform: none; }
+    80%  { left: 100%; opacity: 1; transform: none; }
+    100% { left: 118%; opacity: 0; transform: translateY(-.55em); }
+  }
+  @keyframes trace {
+    from { transform: translateY(0) rotate(24deg); }
+    to   { transform: translateY(-.42em) rotate(17deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .peint { clip-path: none; }
+    .pinceau { display: none; }
+  }
   .hero p.sous { font-size: clamp(1.15rem, 2vw, 1.4rem); font-style: italic; color: var(--gris); }
 
   .btn {
@@ -559,12 +593,29 @@
   /* ----------------------------------------------------------------
      TEXTES
      ---------------------------------------------------------------- */
+  // Fin du mot du titre, peinte par le pinceau après la chute des gouttes
+  const PINCEAU_SVG = '<span class="pinceau" aria-hidden="true"><svg viewBox="0 0 24 120">'
+    + '<rect x="9.5" y="0" width="5" height="72" rx="2.5" fill="#a8844f"/>'
+    + '<rect x="8" y="68" width="8" height="16" rx="1" fill="#cfc7bb"/>'
+    + '<path d="M8 84 L16 84 Q17.5 101 12 118 Q6.5 101 8 84 Z" fill="#5e3f7a"/>'
+    + '</svg></span>';
+  const peint = fin => `<span class="peint-zone"><span class="peint">${fin}</span>${PINCEAU_SVG}</span>`;
+
+  function peindreTitre() {
+    const hero = document.querySelector(".hero");
+    if (!hero || hero.classList.contains("peindre") || hero.classList.contains("peint-fait")) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { hero.classList.add("peint-fait"); return; }
+    hero.classList.add("peindre");
+    setTimeout(() => { hero.classList.remove("peindre"); hero.classList.add("peint-fait"); }, 2500);
+  }
+  setTimeout(peindreTitre, 9000); // sécurité si l'animation des gouttes ne se termine pas
+
   const T = {
     fr: {
       title: "Rickart · Atelier Aquarelle — Antibes",
       desc: "Ateliers d'aquarelle, œuvres et cartes de Noël peintes à la main, à Antibes, Biot et Juan-les-Pins.",
       nav_ateliers: "Ateliers", nav_oeuvres: "Œuvres", nav_cartes: "Cartes de Noël", nav_bons: "Bons cadeaux", nav_contact: "Contact",
-      hero_titre: "Atelier <em>Aquarelle</em> Rickart",
+      hero_titre: `Atelier <em>Aquare${peint("lle")}</em> Rickart`,
       hero_sous: "Ateliers, œuvres originales et cartes peintes à la main",
       hero_btn: "Découvrir les ateliers",
       ateliers_label: "Ateliers", ateliers_titre: "Peindre, simplement",
@@ -613,7 +664,7 @@
       title: "Rickart · Watercolour Workshop — Antibes",
       desc: "Watercolour workshops, artworks and hand-painted Christmas cards in Antibes, Biot and Juan-les-Pins.",
       nav_ateliers: "Workshops", nav_oeuvres: "Artworks", nav_cartes: "Christmas cards", nav_bons: "Gift vouchers", nav_contact: "Contact",
-      hero_titre: "Watercolour <em>Workshop</em> Rickart",
+      hero_titre: `Watercolour <em>Works${peint("hop")}</em> Rickart`,
       hero_sous: "Workshops, original works and hand-painted cards",
       hero_btn: "Discover the workshops",
       ateliers_label: "Workshops", ateliers_titre: "Painting, simply",
@@ -662,7 +713,7 @@
       title: "Rickart · Taller de Acuarelas — Antibes",
       desc: "Talleres de acuarela, obras y tarjetas de Navidad pintadas a mano, en Antibes, Biot y Juan-les-Pins.",
       nav_ateliers: "Talleres", nav_oeuvres: "Obras", nav_cartes: "Tarjetas de Navidad", nav_bons: "Bonos regalo", nav_contact: "Contacto",
-      hero_titre: "Taller de <em>Acuarelas</em> Rickart",
+      hero_titre: `Taller de <em>Acuare${peint("las")}</em> Rickart`,
       hero_sous: "Talleres, obras originales y tarjetas pintadas a mano",
       hero_btn: "Descubrir los talleres",
       ateliers_label: "Talleres", ateliers_titre: "Pintar, con sencillez",
@@ -987,6 +1038,7 @@
       }
 
       if (actives > 0 || lances < TOTAL) requestAnimationFrame(boucle);
+      else peindreTitre();
     }
 
     dimensionner();
@@ -999,6 +1051,7 @@
         nouvelleTache(W * (0.1 + rnd() * 0.8), H * (0.3 + rnd() * 0.65), (10 + rnd() * 16) * echelle, couleur);
       }
       pintarFixe();
+      peindreTitre();
       return;
     }
 
