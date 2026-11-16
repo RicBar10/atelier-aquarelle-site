@@ -785,7 +785,7 @@
       [111, 138, 90]   // vert sauge
     ];
     const TOTAL = 26;
-    const INTERVALLE = 130; // ms entre deux gouttes
+    const INTERVALLE = 90; // ms entre deux gouttes
 
     let W = 0, H = 0, M = 0, dpr = 1, echelle = 1;
     const taches = [];   // coordonnées normalisées
@@ -880,7 +880,7 @@
         x: W * (0.2 + rnd() * 0.6),           // pointe du pinceau
         y: H * 0.08,
         vx: (rnd() - 0.5) * 9 * echelle,
-        vy: -(2.5 + rnd() * 4) * echelle,
+        vy: -(1.5 + rnd() * 2.5) * echelle,
         cible: Math.max(cibleY, H * 0.08 + 60),
         r: (3 + rnd() * 5) * echelle,
         c: couleur,
@@ -899,7 +899,7 @@
       }
     }
 
-    const GRAVITE = 0.5;
+    const GRAVITE = 1.2;
     function boucle(t) {
       pintarFixe();
 
