@@ -258,6 +258,11 @@
   /* ---------- Contact ---------- */
   .contact { text-align: center; }
   .contact .lead { margin: 1.2rem auto 0; }
+  .portrait {
+    width: 200px; margin: 0 auto 2.6rem; padding: 10px; background: #fff;
+    border: 1px solid var(--or-clair); box-shadow: 0 24px 50px -30px rgba(31, 27, 23, .45);
+  }
+  .portrait img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
   .contact .coords {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 3rem;
     margin-top: 2.5rem; font-family: var(--sans); font-size: .85rem; letter-spacing: .16em; text-transform: uppercase;
@@ -480,6 +485,7 @@
 <!-- ============ CONTACT ============ -->
 <section id="contact" class="contact" style="background: var(--papier);">
   <div class="wrap reveal">
+    <div class="portrait"><img src="assets/portrait-rickart.jpg" data-i18n-alt="alt_portrait" alt="" loading="lazy"></div>
     <p class="label" data-i18n="contact_label"></p>
     <h2 data-i18n="contact_titre"></h2>
     <p class="lead" data-i18n="contact_lead"></p>
@@ -553,6 +559,7 @@
       contact_label: "Contact", contact_titre: "Écrire, réserver, rencontrer",
       contact_lead: "Réservations par Instagram ou WhatsApp, en français, espagnol ou anglais.",
       soon: "Bientôt disponible",
+      alt_portrait: "Portrait de Rickart, peintre aquarelliste",
       alt_affiche_biot: "Affiche de l'atelier aquarelle à La Douce Vie, Biot",
       alt_affiche_fourmi: "Affiche de l'atelier création de carte de Noël à La Fourmilière, Antibes",
       alt_affiche_juan: "Affiche des mercredis d'aquarelle à Juan-les-Pins",
@@ -597,6 +604,7 @@
       contact_label: "Contact", contact_titre: "Write, book, meet",
       contact_lead: "Bookings via Instagram or WhatsApp, in French, Spanish or English.",
       soon: "Coming soon",
+      alt_portrait: "Portrait of Rickart, watercolour painter",
       alt_affiche_biot: "Watercolour workshop poster at La Douce Vie, Biot",
       alt_affiche_fourmi: "Christmas card workshop poster at La Fourmilière, Antibes",
       alt_affiche_juan: "Wednesday watercolour workshop poster in Juan-les-Pins",
@@ -641,6 +649,7 @@
       contact_label: "Contacto", contact_titre: "Escribir, reservar, conocer",
       contact_lead: "Reservas por Instagram o WhatsApp, en francés, español o inglés.",
       soon: "Próximamente",
+      alt_portrait: "Retrato de Rickart, pintor de acuarela",
       alt_affiche_biot: "Cartel del taller de acuarela en La Douce Vie, Biot",
       alt_affiche_fourmi: "Cartel del taller de tarjetas de Navidad en La Fourmilière, Antibes",
       alt_affiche_juan: "Cartel de los miércoles de acuarela en Juan-les-Pins",
