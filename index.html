@@ -141,22 +141,67 @@
   .prix-cle small { font-size: 1rem; color: var(--gris); font-style: italic; }
 
   /* ---------- Galerie ---------- */
-  .galerie {
-    display: grid; gap: 1.6rem;
-    grid-template-columns: 1.4fr 1fr;
-    grid-template-rows: auto auto;
+  /* ---------- Livre (feuilletage) ---------- */
+  .livre {
+    max-width: 980px; margin: 0 auto; perspective: 2200px; outline: none;
   }
-  .galerie figure { overflow: hidden; background: var(--papier); border: 1px solid var(--ligne); }
-  .galerie figure:first-child { grid-row: span 2; }
-  .galerie img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
-  .galerie figure:hover img { transform: scale(1.03); }
-  .galerie figcaption {
-    padding: 1rem 1.2rem; font-family: var(--sans); font-size: .72rem;
-    letter-spacing: .2em; text-transform: uppercase; color: var(--gris);
+  .double {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 540px;
+    background: var(--papier);
+    border: 1px solid var(--ligne);
+    box-shadow: 0 40px 80px -45px rgba(31, 27, 23, .5);
+    transform-origin: left center;
   }
+  .double[hidden] { display: none !important; }
+  .page { padding: 3.2rem 3rem; display: flex; flex-direction: column; justify-content: center; }
+  .page.gauche {
+    border-right: 1px solid var(--ligne);
+    background: linear-gradient(to left, rgba(31, 27, 23, .07), transparent 14%), var(--papier);
+  }
+  .page.gauche img {
+    max-height: 460px; width: auto; max-width: 100%; margin: 0 auto;
+    background: #fff; padding: 10px; box-shadow: 0 20px 40px -26px rgba(31, 27, 23, .5);
+  }
+  .page.droite { text-align: center; }
+  .page.droite .numero { font-family: var(--sans); font-size: .72rem; letter-spacing: .3em; color: var(--or); }
+  .page.droite h3 { margin: 1rem 0 1.2rem; font-size: clamp(1.8rem, 3vw, 2.4rem); }
+  .page.droite p { font-style: italic; color: var(--gris); font-size: 1.2rem; max-width: 22rem; margin: 0 auto; }
+  .page.droite .folio {
+    margin-top: 2.6rem; font-family: var(--sans); font-size: .7rem; letter-spacing: .25em; color: var(--gris);
+  }
+
+  .double.tourne-avant { animation: tournerAvant .9s cubic-bezier(.3, .6, .3, 1); }
+  .double.tourne-arriere { animation: tournerArriere .9s cubic-bezier(.3, .6, .3, 1); }
+  @keyframes tournerAvant {
+    0%   { transform: rotateY(-22deg); opacity: .25; }
+    100% { transform: rotateY(0); opacity: 1; }
+  }
+  @keyframes tournerArriere {
+    0%   { transform: rotateY(22deg); opacity: .25; }
+    100% { transform: rotateY(0); opacity: 1; }
+  }
+
+  .commandes {
+    display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 2.6rem;
+  }
+  .fleche {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid var(--or); background: transparent; color: var(--or);
+    font-family: var(--serif); font-size: 1.7rem; line-height: 1; cursor: pointer;
+    transition: background .4s, color .4s;
+  }
+  .fleche:hover { background: var(--or); color: var(--papier); }
+  .points { display: flex; gap: .7rem; }
+  .points button {
+    width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--or);
+    background: transparent; padding: 0; cursor: pointer; transition: background .4s;
+  }
+  .points button.actif { background: var(--or); }
+
   @media (max-width: 760px) {
-    .galerie { grid-template-columns: 1fr; }
-    .galerie figure:first-child { grid-row: auto; }
+    .double { grid-template-columns: 1fr; min-height: 0; }
+    .page.gauche { border-right: none; border-bottom: 1px solid var(--ligne); padding: 2rem 1.5rem; }
+    .page.droite { padding: 2.2rem 1.5rem; }
   }
 
   /* ---------- Cartes de Noël ---------- */
@@ -320,19 +365,45 @@
       <p class="lead" data-i18n="galerie_lead"></p>
     </div>
 
-    <div class="galerie reveal">
-      <figure>
-        <img src="assets/carte-bonhomme-de-neige.jpg" data-i18n-alt="alt_bonhommes" alt="" loading="lazy">
-        <figcaption data-i18n="cap_bonhommes"></figcaption>
-      </figure>
-      <figure>
-        <img src="assets/carte-rouge-gorge.jpg" data-i18n-alt="alt_rouge" alt="" loading="lazy">
-        <figcaption data-i18n="cap_rouge"></figcaption>
-      </figure>
-      <figure>
-        <img src="assets/carte-faon.jpg" data-i18n-alt="alt_faon" alt="" loading="lazy">
-        <figcaption data-i18n="cap_faon"></figcaption>
-      </figure>
+    <div class="livre reveal" id="livre" tabindex="0" data-i18n-aria="livre_label">
+      <div class="double" hidden>
+        <div class="page gauche">
+          <img src="assets/carte-bonhomme-de-neige.jpg" data-i18n-alt="alt_bonhommes" alt="" loading="lazy">
+        </div>
+        <div class="page droite">
+          <p class="numero">I</p>
+          <h3 data-i18n="cap_bonhommes"></h3>
+          <p data-i18n="desc_bonhommes"></p>
+          <p class="folio"></p>
+        </div>
+      </div>
+      <div class="double" hidden>
+        <div class="page gauche">
+          <img src="assets/carte-rouge-gorge.jpg" data-i18n-alt="alt_rouge" alt="" loading="lazy">
+        </div>
+        <div class="page droite">
+          <p class="numero">II</p>
+          <h3 data-i18n="cap_rouge"></h3>
+          <p data-i18n="desc_rouge"></p>
+          <p class="folio"></p>
+        </div>
+      </div>
+      <div class="double" hidden>
+        <div class="page gauche">
+          <img src="assets/carte-faon.jpg" data-i18n-alt="alt_faon" alt="" loading="lazy">
+        </div>
+        <div class="page droite">
+          <p class="numero">III</p>
+          <h3 data-i18n="cap_faon"></h3>
+          <p data-i18n="desc_faon"></p>
+          <p class="folio"></p>
+        </div>
+      </div>
+    </div>
+    <div class="commandes reveal">
+      <button class="fleche" id="precedent" type="button" data-i18n-aria="prev_label">‹</button>
+      <div class="points" id="points"></div>
+      <button class="fleche" id="suivant" type="button" data-i18n-aria="next_label">›</button>
     </div>
   </div>
 </section>
@@ -470,7 +541,9 @@
       bon_envoi: "Envoi postal inclus", offrir: "Offrir",
       contact_label: "Contact", contact_titre: "Écrire, réserver, rencontrer",
       contact_lead: "Réservations par Instagram ou WhatsApp, en français, espagnol ou anglais.",
-      soon: "Bientôt disponible"
+      soon: "Bientôt disponible",
+      livre_label: "Feuilleter les œuvres", prev_label: "Œuvre précédente", next_label: "Œuvre suivante",
+      dot_label: "Aller à l'œuvre"
     },
     en: {
       title: "Rickart · Watercolour Workshop — Antibes",
@@ -509,7 +582,9 @@
       bon_envoi: "Postage included", offrir: "Give",
       contact_label: "Contact", contact_titre: "Write, book, meet",
       contact_lead: "Bookings via Instagram or WhatsApp, in French, Spanish or English.",
-      soon: "Coming soon"
+      soon: "Coming soon",
+      livre_label: "Browse the artworks", prev_label: "Previous artwork", next_label: "Next artwork",
+      dot_label: "Go to artwork"
     },
     es: {
       title: "Rickart · Taller de Acuarelas — Antibes",
@@ -548,7 +623,9 @@
       bon_envoi: "Envío postal incluido", offrir: "Regalar",
       contact_label: "Contacto", contact_titre: "Escribir, reservar, conocer",
       contact_lead: "Reservas por Instagram o WhatsApp, en francés, español o inglés.",
-      soon: "Próximamente"
+      soon: "Próximamente",
+      livre_label: "Hojear las obras", prev_label: "Obra anterior", next_label: "Obra siguiente",
+      dot_label: "Ir a la obra"
     }
   };
 
@@ -567,7 +644,9 @@
     document.querySelectorAll("[data-i18n-alt]").forEach(el => { el.alt = t[el.dataset.i18nAlt]; });
 
     document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("actif", b.dataset.lang === l));
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t[el.dataset.i18nAria]); });
     majLiens();
+    majLivre();
   }
 
   function majLiens() {
@@ -595,6 +674,64 @@
       history.replaceState(null, "", u);
     });
   });
+
+  /* ----------------------------------------------------------------
+     LIVRE DES ŒUVRES : feuilletage page par page
+     ---------------------------------------------------------------- */
+  const livre = document.getElementById("livre");
+  const pages = [...livre.querySelectorAll(".double")];
+  const pointsBox = document.getElementById("points");
+  let indexLivre = 0;
+
+  pages.forEach((_, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.addEventListener("click", () => montrer(k, k >= indexLivre ? 1 : -1));
+    pointsBox.appendChild(b);
+  });
+
+  function majLivre() {
+    const t = T[langActuelle];
+    pointsBox.querySelectorAll("button").forEach((b, k) => {
+      b.setAttribute("aria-label", `${t.dot_label} ${k + 1}`);
+      b.classList.toggle("actif", k === indexLivre);
+    });
+    pages.forEach((d, k) => {
+      const f = d.querySelector(".folio");
+      if (f) f.textContent = `${k + 1} / ${pages.length}`;
+    });
+  }
+
+  function montrer(i, sens = 1) {
+    indexLivre = (i + pages.length) % pages.length;
+    pages.forEach((d, k) => {
+      d.hidden = k !== indexLivre;
+      d.classList.remove("tourne-avant", "tourne-arriere");
+    });
+    const cur = pages[indexLivre];
+    void cur.offsetWidth; // relance l'animation
+    cur.classList.add(sens >= 0 ? "tourne-avant" : "tourne-arriere");
+    majLivre();
+  }
+
+  document.getElementById("precedent").addEventListener("click", () => montrer(indexLivre - 1, -1));
+  document.getElementById("suivant").addEventListener("click", () => montrer(indexLivre + 1, 1));
+
+  livre.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") montrer(indexLivre + 1, 1);
+    if (e.key === "ArrowLeft") montrer(indexLivre - 1, -1);
+  });
+
+  let debutX = null;
+  livre.addEventListener("touchstart", e => { debutX = e.touches[0].clientX; }, { passive: true });
+  livre.addEventListener("touchend", e => {
+    if (debutX === null) return;
+    const dx = e.changedTouches[0].clientX - debutX;
+    if (Math.abs(dx) > 40) montrer(indexLivre + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    debutX = null;
+  });
+
+  montrer(0);
 
   // Langue initiale : ?lang= dans l'URL, sinon langue du navigateur, sinon français
   (function () {
