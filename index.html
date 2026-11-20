@@ -578,6 +578,8 @@
      Tant qu'une valeur commence par "REMPLACER", le bouton reste désactivé.
      Pour le bon cadeau : activer la collecte de l'adresse de livraison.
      ---------------------------------------------------------------- */
+  const WHATSAPP = "33769039771"; // utilisé tant qu'un lien de paiement n'est pas renseigné
+
   const LIENS = {
     atelierBiot:        "REMPLACER-lien-atelier-biot",
     atelierFourmiliere: "REMPLACER-lien-atelier-fourmiliere-30",
@@ -648,6 +650,18 @@
       contact_label: "Contact", contact_titre: "Écrire, réserver, rencontrer",
       contact_lead: "Réservations par Instagram ou WhatsApp, en français, espagnol ou anglais.",
       soon: "Bientôt disponible",
+      wa_bonjour: "Bonjour, je souhaite",
+      wa_articles: {
+        atelierBiot: "réserver l'atelier aquarelle à La Douce Vie (Biot).",
+        atelierFourmiliere: "réserver l'atelier carte de Noël à La Fourmilière (Antibes).",
+        atelierJuan: "réserver l'atelier aquarelle à Juan-les-Pins.",
+        carteBonhomme: "acheter la carte « Hiver à deux » (8 €).",
+        carteRougeGorge: "acheter la carte « Le rouge-gorge au bonnet » (12 €).",
+        carteFaon: "acheter la carte « Le faon aux guirlandes » (8 €).",
+        bon15: "offrir le bon cadeau d'un atelier (15 €).",
+        bon30: "offrir le bon cadeau de deux cours (30 €).",
+        bon48: "offrir le bon cadeau de quatre cours (48 €)."
+      },
       alt_portrait: "Portrait de Rickart, peintre aquarelliste",
       bon_carte: "Accompagné d'une carte peinte à la main à offrir.",
       bon_un_label: "Un atelier", bon_un_texte: "Valable pour l'atelier de votre choix.",
@@ -697,6 +711,18 @@
       contact_label: "Contact", contact_titre: "Write, book, meet",
       contact_lead: "Bookings via Instagram or WhatsApp, in French, Spanish or English.",
       soon: "Coming soon",
+      wa_bonjour: "Hello, I would like to",
+      wa_articles: {
+        atelierBiot: "book the watercolour workshop at La Douce Vie (Biot).",
+        atelierFourmiliere: "book the Christmas card workshop at La Fourmilière (Antibes).",
+        atelierJuan: "book the watercolour workshop in Juan-les-Pins.",
+        carteBonhomme: "buy the card “Winter for two” (8 €).",
+        carteRougeGorge: "buy the card “The robin in a bonnet” (12 €).",
+        carteFaon: "buy the card “The fawn with fairy lights” (8 €).",
+        bon15: "give the one-workshop gift voucher (15 €).",
+        bon30: "give the two-class gift voucher (30 €).",
+        bon48: "give the four-class gift voucher (48 €)."
+      },
       alt_portrait: "Portrait of Rickart, watercolour painter",
       bon_carte: "Comes with a hand-painted card to give.",
       bon_un_label: "One workshop", bon_un_texte: "Valid for the workshop of your choice.",
@@ -746,6 +772,18 @@
       contact_label: "Contacto", contact_titre: "Escribir, reservar, conocer",
       contact_lead: "Reservas por Instagram o WhatsApp, en francés, español o inglés.",
       soon: "Próximamente",
+      wa_bonjour: "Hola, quisiera",
+      wa_articles: {
+        atelierBiot: "reservar el taller de acuarela en La Douce Vie (Biot).",
+        atelierFourmiliere: "reservar el taller de tarjeta de Navidad en La Fourmilière (Antibes).",
+        atelierJuan: "reservar el taller de acuarela en Juan-les-Pins.",
+        carteBonhomme: "comprar la tarjeta «Invierno a dos» (8 €).",
+        carteRougeGorge: "comprar la tarjeta «El petirrojo con gorro» (12 €).",
+        carteFaon: "comprar la tarjeta «El cervatillo con guirnaldas» (8 €).",
+        bon15: "regalar el bono de un taller (15 €).",
+        bon30: "regalar el bono de dos clases (30 €).",
+        bon48: "regalar el bono de cuatro clases (48 €)."
+      },
       alt_portrait: "Retrato de Rickart, pintor de acuarela",
       bon_carte: "Incluye una tarjeta pintada a mano para regalar.",
       bon_un_label: "Un taller", bon_un_texte: "Válido para el taller que elijas.",
@@ -783,9 +821,14 @@
     document.querySelectorAll("[data-lien]").forEach(el => {
       const url = LIENS[el.dataset.lien];
       if (!url || url.startsWith("REMPLACER")) {
-        el.setAttribute("aria-disabled", "true");
-        el.title = T[langActuelle].soon;
-        el.removeAttribute("href");
+        // En attendant le lien de paiement : message WhatsApp pré-rempli
+        const t = T[langActuelle];
+        const article = (t.wa_articles || {})[el.dataset.lien] || "";
+        el.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${t.wa_bonjour} ${article}`.trim())}`;
+        el.target = "_blank";
+        el.rel = "noopener";
+        el.removeAttribute("aria-disabled");
+        el.removeAttribute("title");
       } else {
         el.href = url;
         el.target = "_blank";
